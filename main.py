@@ -47,7 +47,7 @@ class Graphic(tk.Tk):
         self.title("Tetris")
         self.geometry("{}x{}".format(WINDOW_WIDTH, WINDOW_HEIGHT))
 
-        self.filed = Field(self, board)
+        self.field = Field(self, board)
 
 
 def bin_to_dot_sharp_str(board: Board) -> str:
