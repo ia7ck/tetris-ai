@@ -66,13 +66,11 @@ def bin_to_dot_sharp_str(board: Board) -> str:
 
 
 class Tetris:
-
     # keyword-only https://note.nkmk.me/python-args-kwargs-usage/
     def __init__(self):
         self.row_num = 20
         self.col_num = 10
         self.board = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
-
         self.pieces = tetromino.make_pieces()
 
         self.gui: Graphic
@@ -101,11 +99,41 @@ class Tetris:
                     self.board[i + min_distance][x0 + j] = 1
         return True
 
+    def resolve(self) -> bool:
+        line_removed = False
+        for i, row in enumerate(self.board):
+            if sum(row) == self.col_num:
+                line_removed = True
+                for ii in reversed(range(i)):
+                    for j in range(len(row)):
+                        self.board[ii + 1][j] = self.board[ii][j]
+                for j in range(len(row)):
+                    self.board[0][j] = 0  # 最上段には空行
+        return line_removed
+
+    def random_play(self):
+        import random
+
+        piece = random.choice(self.pieces)
+        # piece = tetromino.Piece("X", [[1]], 1, 1) # ふつうにやると全然1列揃わないので
+        x = random.randint(0, self.col_num - piece.width)
+        can_put = self.put_piece(x, piece)
+        self.gui.field.draw(self.board)
+        if not can_put:
+            print("can't put the piece with x = {}:".format(x))
+            print(piece)
+            return
+        wait_time = 100
+        if self.resolve():
+            wait_time += 200
+        self.gui.after(wait_time, self.random_play)
+
 
 def main():
     tetris = Tetris()
-    # tetris.gui = Graphic(tetris.board)
-    # tetris.gui.mainloop()
+    tetris.gui = Graphic(tetris.board)
+    tetris.random_play()
+    tetris.gui.mainloop()
 
 
 if __name__ == "__main__":
