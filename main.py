@@ -15,7 +15,6 @@ class Graphic(tk.Tk):
 
 
 class Tetris:
-    # keyword-only https://note.nkmk.me/python-args-kwargs-usage/
     def __init__(self):
         self.board = tboard.Board()
         self.pieces = game.make_pieces()
