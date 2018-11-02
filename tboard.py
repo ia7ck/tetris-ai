@@ -1,19 +1,18 @@
 import tkinter as tk
 import dataclasses
-import itertools
+import collections
+import sys
 from typing import List
-from game import Action
+from game import Action, CANVAS_WIDTH, CANVAS_HEIGHT, ROW_NUM, COL_NUM
 
-CANVAS_WIDTH = 480
-CANVAS_HEIGHT = 960
 
 ObjectID = int  # たぶん
-didj = itertools.product([0, -1, 0, 1], [1, 0, -1, 0])
+didj = [(0, 1), (-1, 0), (0, -1), (1, 0)]
 
 
 class Board:
-    row_num: int = 20
-    col_num: int = 10
+    row_num = ROW_NUM
+    col_num = COL_NUM
 
     def __init__(self):
         self.table = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
@@ -69,23 +68,38 @@ class Board:
         return removed_num
 
     def has_dead(self) -> bool:
+        return self.count_dead() > 0
+
+    def count_dead(self) -> int:
+        dist = [[sys.maxsize for c in range(self.col_num)] for r in range(self.row_num)]
+        # queue.Queue() は遅い http://n-knuu.hatenablog.jp/entry/2015/05/30/183718
+        que: collections.deque = collections.deque()
+        for j in range(self.col_num):
+            if self.table[0][j] == 0:
+                dist[0][j] = 0
+                que.append((0, j))
+        while len(que) > 0:
+            i, j = que.popleft()
+            for di, dj in didj:
+                ni, nj = i + di, j + dj
+                if 0 <= ni and ni < self.row_num and 0 <= nj and nj < self.col_num:
+                    if (dist[ni][nj] == sys.maxsize) and (self.table[ni][nj] == 0):
+                        dist[ni][nj] = dist[i][j] + 1
+                        que.append((ni, nj))
+        dead_num = 0
         for i in range(self.row_num):
             for j in range(self.col_num):
-                if self.table[i][j]:
-                    adj_empty_num = 0
-                    for di, dj in didj:
-                        ni, nj = i + di, j + dj
-                        if (
-                            0 <= ni
-                            and ni < self.row_num
-                            and 0 <= nj
-                            and nj < self.col_num
-                        ):
-                            if self.table[ni][nj]:
-                                adj_empty_num += 1
-                    if adj_empty_num == 0:
-                        return False
-        return True
+                if self.table[i][j] == 0:
+                    if dist[i][j] > i:  # 細長いとこもダメ
+                        dead_num += 1
+
+        return dead_num
+
+    def max_height(self) -> int:
+        for i, row in enumerate(self.table):
+            if sum(row) > 0:
+                return self.row_num - i
+        return 0
 
 
 class Field(tk.Canvas):
