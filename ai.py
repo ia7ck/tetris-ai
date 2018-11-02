@@ -9,27 +9,32 @@ from tboard import Board
 class Ai:
     memo: Dict = {}
 
-    def arg_max(self, board: Board, piece: Piece) -> Action:
-        state = (str(board) + str(piece)).replace("\n", "")
-        mx_pos = -1
+    def arg_max(self, board: Board, piece_set: List[Piece]) -> Action:
         mx_val = 0.0
-        for x in range(board.col_num - piece.width + 1):
-            key = (state, x)
-            if key in self.memo:
-                values = self.memo[key]
-                if sum(values) / len(values) > mx_val:
-                    mx_val = sum(values) / len(values)
-                    mx_pos = x
-        return Action(mx_pos, piece)
+        best_pos = -1
+        best_piece = piece_set[0]
+        for piece in piece_set:
+            state = (str(board) + str(piece)).replace("\n", "")
+            for x in range(board.col_num - piece.width + 1):
+                key = (state, x)
+                if key in self.memo:
+                    values = self.memo[key]
+                    if sum(values) / len(values) > mx_val:
+                        mx_val = sum(values) / len(values)
+                        best_pos = x
+                        best_piece = piece
+        return Action(best_pos, best_piece)
 
-    def get_action(self, board: Board, piece: Piece) -> Action:
-        best_action = self.arg_max(board, piece)
+    def get_action(self, board: Board, piece_set: List[Piece]) -> Action:
+        best_action = self.arg_max(board, piece_set)
         if best_action.x0 < 0:
+            piece = random.choice(piece_set)
             best_action = Action(random.randint(0, board.col_num - piece.width), piece)
         return best_action
 
     @staticmethod
-    def choose_random(board: Board, piece: Piece) -> Action:
+    def choose_random(board: Board, piece_set: List[Piece]) -> Action:
+        piece = random.choice(piece_set)
         x = random.randint(0, board.col_num - piece.width)
         return Action(x, piece)
 
@@ -41,8 +46,8 @@ class Ai:
             board = Board()
             count = 0
             while True:
-                given_piece = random.choice(pieces)
-                action = self.choose_random(board, given_piece)
+                given_piece_set = random.choice(pieces)
+                action = self.choose_random(board, given_piece_set)
                 keys.append(
                     ((str(board) + str(action.piece)).replace("\n", ""), action.x0)
                 )
