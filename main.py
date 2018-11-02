@@ -2,6 +2,7 @@ import tkinter as tk
 from typing import List
 import game
 import tboard
+import tfield
 
 
 class Graphic(tk.Tk):
@@ -10,7 +11,7 @@ class Graphic(tk.Tk):
         self.title("Tetris")
         self.geometry("{}x{}".format(game.WINDOW_WIDTH, game.WINDOW_HEIGHT))
 
-        self.field = tboard.Field(self, board)
+        self.field = tfield.Field(self, board)
 
 
 class Tetris:

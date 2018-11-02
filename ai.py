@@ -1,8 +1,5 @@
-import time
-import dataclasses
-from typing import List, Dict, Tuple
-import random
-from game import Piece, Action, make_pieces
+from typing import List
+from game import Piece, Action
 from tboard import Board
 
 import abc
