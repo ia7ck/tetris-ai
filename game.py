@@ -27,20 +27,20 @@ def make_pieces() -> List[Piece]:
     pieces.append(Piece("Z", [[1, 1, 0], [0, 1, 1]], 3, 2))
     pieces.append(Piece("Z", [[0, 1], [1, 1], [1, 0]], 2, 3))
 
-    pieces.append(Piece("J", [[1, 0, 0], [1, 1, 1]], 3, 2))
-    pieces.append(Piece("J", [[1, 1], [1, 0], [1, 0]], 2, 3))
-    pieces.append(Piece("J", [[1, 1, 1], [0, 0, 1]], 3, 2))
-    pieces.append(Piece("J", [[0, 1], [0, 1], [1, 1]], 2, 3))
+    # pieces.append(Piece("J", [[1, 0, 0], [1, 1, 1]], 3, 2))
+    # pieces.append(Piece("J", [[1, 1], [1, 0], [1, 0]], 2, 3))
+    # pieces.append(Piece("J", [[1, 1, 1], [0, 0, 1]], 3, 2))
+    # pieces.append(Piece("J", [[0, 1], [0, 1], [1, 1]], 2, 3))
 
-    pieces.append(Piece("L", [[0, 0, 1], [1, 1, 1]], 3, 2))
-    pieces.append(Piece("L", [[1, 0], [1, 0], [1, 1]], 2, 3))
-    pieces.append(Piece("L", [[1, 1, 1], [1, 0, 0]], 3, 2))
-    pieces.append(Piece("L", [[1, 1], [0, 1], [0, 1]], 2, 3))
+    # pieces.append(Piece("L", [[0, 0, 1], [1, 1, 1]], 3, 2))
+    # pieces.append(Piece("L", [[1, 0], [1, 0], [1, 1]], 2, 3))
+    # pieces.append(Piece("L", [[1, 1, 1], [1, 0, 0]], 3, 2))
+    # pieces.append(Piece("L", [[1, 1], [0, 1], [0, 1]], 2, 3))
 
-    pieces.append(Piece("T", [[0, 1, 0], [1, 1, 1]], 3, 2))
-    pieces.append(Piece("T", [[1, 0], [1, 1], [1, 0]], 2, 3))
-    pieces.append(Piece("T", [[1, 1, 1], [0, 1, 0]], 3, 2))
-    pieces.append(Piece("T", [[0, 1], [1, 1], [0, 1]], 2, 3))
+    # pieces.append(Piece("T", [[0, 1, 0], [1, 1, 1]], 3, 2))
+    # pieces.append(Piece("T", [[1, 0], [1, 1], [1, 0]], 2, 3))
+    # pieces.append(Piece("T", [[1, 1, 1], [0, 1, 0]], 3, 2))
+    # pieces.append(Piece("T", [[0, 1], [1, 1], [0, 1]], 2, 3))
 
     return pieces
 
