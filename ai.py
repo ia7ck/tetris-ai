@@ -1,13 +1,7 @@
 import dataclasses
 import random
-from tetromino import Piece
+from game import Piece, Action
 from tboard import Board
-
-
-@dataclasses.dataclass
-class Action:
-    x0: int
-    piece: Piece
 
 
 class Ai:

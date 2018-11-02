@@ -47,3 +47,9 @@ def make_pieces() -> List[Piece]:
     pieces.append(Piece("T", [[0, 1], [1, 1], [0, 1]], 2, 3))
 
     return pieces
+
+
+@dataclasses.dataclass
+class Action:
+    x0: int
+    piece: Piece
