@@ -3,6 +3,7 @@ from typing import List
 import game
 import tboard
 import ai
+import monte_carlo
 
 WINDOW_WIDTH = 480
 WINDOW_HEIGHT = 960
@@ -22,7 +23,7 @@ class Tetris:
     def __init__(self):
         self.board = tboard.Board()
         self.pieces = game.make_pieces()
-        self.ai: ai.Ai
+        # self.ai: ai.Ai # 気持ち
         self.gui: Graphic
 
     def play(self):
@@ -46,7 +47,8 @@ def main():
     import sys
 
     tetris = Tetris()
-    rand_ai = ai.Ai()
+
+    rand_ai = monte_carlo.MonteCarlo()
     n = 5000
     if len(sys.argv) == 2:
         n = int(sys.argv[1])
