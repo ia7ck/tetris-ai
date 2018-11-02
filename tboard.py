@@ -1,5 +1,6 @@
 import tkinter as tk
 import dataclasses
+import itertools
 from typing import List
 from game import Action
 
@@ -7,6 +8,7 @@ CANVAS_WIDTH = 480
 CANVAS_HEIGHT = 960
 
 ObjectID = int  # たぶん
+didj = itertools.product([0, -1, 0, 1], [1, 0, -1, 0])
 
 
 class Board:
@@ -65,6 +67,25 @@ class Board:
                 for j in range(len(row)):
                     self.table[0][j] = 0  # 最上段には空行
         return removed_num
+
+    def has_dead(self) -> bool:
+        for i in range(self.row_num):
+            for j in range(self.col_num):
+                if self.table[i][j]:
+                    adj_empty_num = 0
+                    for di, dj in didj:
+                        ni, nj = i + di, j + dj
+                        if (
+                            0 <= ni
+                            and ni < self.row_num
+                            and 0 <= nj
+                            and nj < self.col_num
+                        ):
+                            if self.table[ni][nj]:
+                                adj_empty_num += 1
+                    if adj_empty_num == 0:
+                        return False
+        return True
 
 
 class Field(tk.Canvas):

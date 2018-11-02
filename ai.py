@@ -52,7 +52,7 @@ class Ai:
                     ((str(board) + str(action.piece)).replace("\n", ""), action.x0)
                 )
                 can_put = board.proceed(action)
-                if not can_put:
+                if (not can_put) or board.has_dead():
                     for key in keys:
                         if key in self.memo:
                             self.memo[key].append(0)
