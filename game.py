@@ -10,11 +10,7 @@ class Piece:
     height: int
 
     def __str__(self) -> str:
-        return (
-            "form: {}".format(self.form)
-            + "\n"
-            + "\n".join("".join(["#" if x else "." for x in r]) for r in self.blocks)
-        )
+        return "\n".join("".join(["#" if x else "." for x in r]) for r in self.blocks)
 
 
 def make_pieces() -> List[Piece]:

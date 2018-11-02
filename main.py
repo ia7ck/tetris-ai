@@ -22,10 +22,10 @@ class Tetris:
     def __init__(self):
         self.board = tboard.Board()
         self.pieces = game.make_pieces()
-        self.ai = ai.Ai()
+        self.ai: ai.Ai
         self.gui: Graphic
 
-    def random_play(self):
+    def play(self):
         import random
 
         given_piece = random.choice(self.pieces)
@@ -39,12 +39,22 @@ class Tetris:
         wait_time = 100
         if self.board.resolve() > 0:
             wait_time += 200
-        self.gui.after(wait_time, self.random_play)
+        self.gui.after(wait_time, self.play)
 
 
 def main():
+    import sys
+
     tetris = Tetris()
-    tetris.random_play()
+    rand_ai = ai.Ai()
+    n = 5000
+    if len(sys.argv) == 2:
+        n = int(sys.argv[1])
+    rand_ai.learn(n)
+    tetris.ai = rand_ai
+
+    tetris.gui = Graphic(tetris.board)
+    tetris.play()
     tetris.gui.mainloop()
 
 
