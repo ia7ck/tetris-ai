@@ -5,7 +5,7 @@ dist: xenial
 python:
   - "3.7"
 install:
-  - pip install pyenv
+  - pip install pipenv
   - pipenv install --dev
 script:
   - pipenv run python test_tboard.py -v
