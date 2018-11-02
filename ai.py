@@ -11,7 +11,7 @@ class Ai:
 
     def arg_max(self, board: Board, piece: Piece) -> Action:
         state = (str(board) + str(piece)).replace("\n", "")
-        mx_pos = 0
+        mx_pos = -1
         mx_val = 0.0
         for x in range(board.col_num - piece.width + 1):
             key = (state, x)
@@ -23,7 +23,10 @@ class Ai:
         return Action(mx_pos, piece)
 
     def get_action(self, board: Board, piece: Piece) -> Action:
-        return self.arg_max(board, piece)
+        best_action = self.arg_max(board, piece)
+        if best_action.x0 < 0:
+            best_action = Action(random.randint(0, board.col_num - piece.width), piece)
+        return best_action
 
     @staticmethod
     def choose_random(board: Board, piece: Piece) -> Action:
@@ -36,6 +39,7 @@ class Ai:
         for _ in range(num):
             keys: List[Tuple[str, int]] = []
             board = Board()
+            count = 0
             while True:
                 given_piece = random.choice(pieces)
                 action = self.choose_random(board, given_piece)
@@ -44,12 +48,21 @@ class Ai:
                 )
                 can_put = board.proceed(action)
                 if not can_put:
-                    for i, key in enumerate(keys):
+                    for key in keys:
                         if key in self.memo:
-                            self.memo[key].append(len(keys) - i - 1)
+                            self.memo[key].append(0)
                         else:
-                            self.memo[key] = [len(keys) - i - 1]
+                            self.memo[key] = [0]
                     break
                 board.resolve()
+                count += 1
+                if count == 23:  # 23ターン耐えたら報酬
+                    for key in keys:
+                        if key in self.memo:
+                            self.memo[key].append(1)
+                        else:
+                            self.memo[key] = [1]
+                    break
+
         end_time = time.time()
         print("{} seconds".format(end_time - start_time))
