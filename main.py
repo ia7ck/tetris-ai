@@ -2,18 +2,13 @@ import tkinter as tk
 from typing import List
 import game
 import tboard
-import ai
-import monte_carlo
-
-WINDOW_WIDTH = 480
-WINDOW_HEIGHT = 960
 
 
 class Graphic(tk.Tk):
     def __init__(self, board: tboard.Board):
         super().__init__()
         self.title("Tetris")
-        self.geometry("{}x{}".format(WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.geometry("{}x{}".format(game.WINDOW_WIDTH, game.WINDOW_HEIGHT))
 
         self.field = tboard.Field(self, board)
 
@@ -45,15 +40,19 @@ class Tetris:
 
 def main():
     import sys
+    import monte_carlo
+    import cost_func_ai
 
     tetris = Tetris()
 
-    rand_ai = monte_carlo.MonteCarlo()
-    n = 5000
-    if len(sys.argv) == 2:
-        n = int(sys.argv[1])
-    rand_ai.learn(n)
-    tetris.ai = rand_ai
+    tetris.ai = cost_func_ai.CostFuncAi()
+
+    # rand_ai = monte_carlo.MonteCarlo()
+    # n = 5000
+    # if len(sys.argv) == 2:
+    #     n = int(sys.argv[1])
+    # rand_ai.learn(n)
+    # tetris.ai = rand_ai
 
     tetris.gui = Graphic(tetris.board)
     tetris.play()
