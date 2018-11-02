@@ -1,6 +1,6 @@
 init:
 	pip install pipenv
-  pipenv install --dev
+	pipenv install --dev
 
 test:
-  pipenv run python test_tboard.py -v
+	pipenv run python test_tboard.py -v
