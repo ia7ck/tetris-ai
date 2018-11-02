@@ -1,6 +1,15 @@
 import dataclasses
 from typing import List
 
+WINDOW_WIDTH = 480
+WINDOW_HEIGHT = 960
+
+CANVAS_WIDTH = 480
+CANVAS_HEIGHT = 960
+
+ROW_NUM = 20
+COL_NUM = 10
+
 
 @dataclasses.dataclass
 class Piece:
@@ -36,31 +45,31 @@ def make_pieces() -> List[List[Piece]]:
         ]
     )
 
-    # pieces.append(
-    #     [
-    #         Piece("J", [[1, 0, 0], [1, 1, 1]], 3, 2),
-    #         Piece("J", [[1, 1], [1, 0], [1, 0]], 2, 3),
-    #         Piece("J", [[1, 1, 1], [0, 0, 1]], 3, 2),
-    #         Piece("J", [[0, 1], [0, 1], [1, 1]], 2, 3),
-    #     ]
-    # )
-    # pieces.append(
-    #     [
-    #         Piece("L", [[0, 0, 1], [1, 1, 1]], 3, 2),
-    #         Piece("L", [[1, 0], [1, 0], [1, 1]], 2, 3),
-    #         Piece("L", [[1, 1, 1], [1, 0, 0]], 3, 2),
-    #         Piece("L", [[1, 1], [0, 1], [0, 1]], 2, 3),
-    #     ]
-    # )
+    pieces.append(
+        [
+            Piece("J", [[1, 0, 0], [1, 1, 1]], 3, 2),
+            Piece("J", [[1, 1], [1, 0], [1, 0]], 2, 3),
+            Piece("J", [[1, 1, 1], [0, 0, 1]], 3, 2),
+            Piece("J", [[0, 1], [0, 1], [1, 1]], 2, 3),
+        ]
+    )
+    pieces.append(
+        [
+            Piece("L", [[0, 0, 1], [1, 1, 1]], 3, 2),
+            Piece("L", [[1, 0], [1, 0], [1, 1]], 2, 3),
+            Piece("L", [[1, 1, 1], [1, 0, 0]], 3, 2),
+            Piece("L", [[1, 1], [0, 1], [0, 1]], 2, 3),
+        ]
+    )
 
-    # pieces.append(
-    #     [
-    #         Piece("T", [[0, 1, 0], [1, 1, 1]], 3, 2),
-    #         Piece("T", [[1, 0], [1, 1], [1, 0]], 2, 3),
-    #         Piece("T", [[1, 1, 1], [0, 1, 0]], 3, 2),
-    #         Piece("T", [[0, 1], [1, 1], [0, 1]], 2, 3),
-    #     ]
-    # )
+    pieces.append(
+        [
+            Piece("T", [[0, 1, 0], [1, 1, 1]], 3, 2),
+            Piece("T", [[1, 0], [1, 1], [1, 0]], 2, 3),
+            Piece("T", [[1, 1, 1], [0, 1, 0]], 3, 2),
+            Piece("T", [[0, 1], [1, 1], [0, 1]], 2, 3),
+        ]
+    )
 
     return pieces
 
