@@ -17,21 +17,6 @@ class Graphic(tk.Tk):
         self.field = tboard.Field(self, board)
 
 
-def bin_to_dot_sharp_str(board: tboard.Board) -> str:
-    """ 
-    [
-        [0, 1, 1], 
-        [1, 0, 1],
-    ]
-
-    =>
-
-    .##\n
-    #.#
-    """
-    return "\n".join("".join(["#" if x else "." for x in r]) for r in board.table)
-
-
 class Tetris:
     # keyword-only https://note.nkmk.me/python-args-kwargs-usage/
     def __init__(self):
@@ -59,7 +44,6 @@ class Tetris:
 
 def main():
     tetris = Tetris()
-    tetris.gui = Graphic(tetris.board)
     tetris.random_play()
     tetris.gui.mainloop()
 

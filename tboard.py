@@ -16,6 +16,20 @@ class Board:
     def __init__(self):
         self.table = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
 
+    def __str__(self) -> str:
+        """ 
+        [
+            [0, 1, 1], 
+            [1, 0, 1],
+        ]
+
+        =>
+
+        .##\n
+        #.#
+        """
+        return "\n".join("".join(["#" if x else "." for x in r]) for r in self.table)
+
     def proceed(self, action: Action) -> bool:
         assert 0 <= action.x0 and action.x0 < self.col_num
         min_distance = self.row_num - 1  # ピースの各ブロックが落下できる最小距離
