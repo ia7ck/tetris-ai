@@ -1,0 +1,7 @@
+# https://pipenv-ja.readthedocs.io/ja/translate-ja/advanced.html
+language: python
+python:
+  - "3.7"
+install: "make"
+script:
+  - make test
