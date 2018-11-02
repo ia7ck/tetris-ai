@@ -1,7 +1,6 @@
-# https://pipenv-ja.readthedocs.io/ja/translate-ja/advanced.html
-language: python
-python:
-  - "3.7"
-install: "make"
-script:
-  - make test
+# https://github.com/travis-ci/travis-ci/issues/9815
+matrix:
+  include:
+    - python: 3.7
+      dist: xenial
+      sudo: true
