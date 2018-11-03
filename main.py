@@ -20,6 +20,7 @@ class Tetris:
         self.pieces = game.make_pieces()
         # self.ai: ai.Ai # 気持ち
         self.gui: Graphic
+        self.score = 0
 
     def play(self):
         import random
@@ -27,13 +28,15 @@ class Tetris:
         given_piece_set = random.choice(self.pieces)
         action = self.ai.get_action(self.board, given_piece_set)
         can_put = self.board.proceed(action)
-        self.gui.field.draw(self.board)
         if not can_put:
             print("can't put the piece with x = {}:".format(action.x0))
             print(action.piece)
+            print("score : {}".format(self.score))
             return
         wait_time = 100
-        if self.board.resolve() > 0:
+        rm_line_num = self.board.resolve()
+        self.score += game.SCORES[rm_line_num]
+        if rm_line_num > 0:
             wait_time += 200
         self.gui.after(wait_time, self.play)
 
