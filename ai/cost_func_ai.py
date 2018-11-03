@@ -1,14 +1,15 @@
+import copy, sys
 from typing import List
-import copy
-import sys
-from ai import Ai
-from game import Piece, Action
-from tboard import Board
+from ai.abs_ai import Ai
+from game import Piece, Action, Board
 
 
 class CostFuncAi(Ai):
-    def __init__(self):
-        self.coefficients = [-1, 1, 1]
+    def __init__(self, coefficients: List[int] = None):
+        if coefficients is None:
+            self.coefficients = [-1, 1, 1]
+        else:
+            self.coefficients = coefficients
 
     def get_action(self, board: Board, piece_set: List[Piece]) -> Action:
         best_action: Action

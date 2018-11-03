@@ -1,9 +1,17 @@
 import tkinter as tk
-from tboard import Board
 from typing import List
-from game import CANVAS_WIDTH, CANVAS_HEIGHT, COLORS
+from game import Board, WINDOW_WIDTH, WINDOW_HEIGHT, CANVAS_WIDTH, CANVAS_HEIGHT, COLORS
 
 ObjectID = int  # たぶん
+
+
+class Graphic(tk.Tk):
+    def __init__(self, board: Board):
+        super().__init__()
+        self.title("Tetris")
+        self.geometry("{}x{}".format(WINDOW_WIDTH, WINDOW_HEIGHT))
+
+        self.field = Field(self, board)
 
 
 class Field(tk.Canvas):

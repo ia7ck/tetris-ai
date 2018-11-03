@@ -1,64 +1,60 @@
+import sys, random
 import tkinter as tk
 from typing import List
 import game
-import tboard
-import tfield
-
-
-class Graphic(tk.Tk):
-    def __init__(self, board: tboard.Board):
-        super().__init__()
-        self.title("Tetris")
-        self.geometry("{}x{}".format(game.WINDOW_WIDTH, game.WINDOW_HEIGHT))
-
-        self.field = tfield.Field(self, board)
+import graphic
+import ai.monte_carlo
+import ai.cost_func_ai
+import ai.ga
 
 
 class Tetris:
     def __init__(self):
-        self.board = tboard.Board()
-        self.pieces = game.make_pieces()
+        self.board = game.Board()
         # self.ai: ai.Ai # 気持ち
-        self.gui: Graphic
+        self.gui: graphic.Graphic
         self.score = 0
 
     def play(self):
-        import random
+        print("[start]")
+        self.run()
 
-        given_piece_set = random.choice(self.pieces)
+    def run(self):
+        given_piece_set = random.choice(game.pieces)
         action = self.ai.get_action(self.board, given_piece_set)
         can_put = self.board.proceed(action)
         self.gui.field.draw(self.board)
         if not can_put:
-            print("can't put the piece with x = {}:".format(action.x0))
-            print(action.piece)
-            print("score : {}".format(self.score))
+            self.tear_down(action)
             return
         wait_time = 100
         rm_line_num = self.board.resolve()
         self.score += game.SCORES[rm_line_num]
         if rm_line_num > 0:
             wait_time += 200
-        self.gui.after(wait_time, self.play)
+        self.gui.after(wait_time, self.run)
+
+    def tear_down(self, action: game.Action):
+        print("[end]")
+        print("can't put the piece with x = {}:".format(action.x0))
+        print(action.piece)
+        print("score : {}".format(self.score))
 
 
 def main():
-    import sys
-    import monte_carlo
-    import cost_func_ai
-
     tetris = Tetris()
+    tetris.ai = ai.cost_func_ai.CostFuncAi(
+        coefficients=ai.ga.Ga.solve(population_size=8, gen_limit=4)  # 大きくしすぎると終わらない
+    )
 
-    tetris.ai = cost_func_ai.CostFuncAi()
-
-    # rand_ai = monte_carlo.MonteCarlo()
+    # rand_ai = ai.monte_carlo.MonteCarlo()
     # n = 5000
     # if len(sys.argv) == 2:
     #     n = int(sys.argv[1])
     # rand_ai.learn(n)
     # tetris.ai = rand_ai
 
-    tetris.gui = Graphic(tetris.board)
+    tetris.gui = graphic.Graphic(tetris.board)
     tetris.play()
     tetris.gui.mainloop()
 

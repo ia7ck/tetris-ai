@@ -1,8 +1,6 @@
-from typing import List
-from game import Piece, Action
-from tboard import Board
-
 import abc
+from typing import List
+from game import Piece, Action, Board
 
 
 class Ai(abc.ABC):
