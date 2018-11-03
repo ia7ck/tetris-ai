@@ -7,6 +7,9 @@ from tboard import Board
 
 
 class CostFuncAi(Ai):
+    def __init__(self):
+        self.coefficients = [-1, 1, 1]
+
     def get_action(self, board: Board, piece_set: List[Piece]) -> Action:
         best_action: Action
         min_cost = sys.maxsize
@@ -28,7 +31,13 @@ class CostFuncAi(Ai):
     def calc(self, before_board: Board, after_board: Board) -> int:
         cost = 0
         rm_line_num = after_board.resolve()
-        cost -= rm_line_num * rm_line_num
-        cost += after_board.count_dead() - before_board.count_dead()
-        cost += after_board.adj_diff_sum() - before_board.adj_diff_sum()
+        for c, x in zip(
+            self.coefficients,
+            [
+                rm_line_num * rm_line_num,
+                after_board.count_dead() - before_board.count_dead(),
+                after_board.adj_diff_sum() - before_board.adj_diff_sum(),
+            ],
+        ):
+            cost += c * x
         return cost
