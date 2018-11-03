@@ -98,3 +98,19 @@ class Board:
             if sum(row) > 0:
                 return self.row_num - i
         return 0
+
+    def adj_diff_sum(self) -> int:
+        """ retrun sum(abs(dep[i+1]-dep[i])) for i in [0, col_num) """
+        ret = 0
+        pre_d = 0
+        for j in range(self.col_num):
+            for i in range(self.row_num):
+                if self.table[i][j]:
+                    if j > 0:
+                        ret += abs(pre_d - (i))
+                    pre_d = i
+                    break
+            else:
+                ret += abs(pre_d - self.row_num)
+                pre_d = self.row_num
+        return ret

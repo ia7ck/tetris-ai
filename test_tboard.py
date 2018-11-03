@@ -107,6 +107,17 @@ class TestBoard(unittest.TestCase):
                     self.board.table[self.row_num - i - 1][j] = 1
         self.assertEqual(self.board.max_height(), 3, str(self.board))
 
+    def test_adj_diff_sum(self):
+        """ 
+        #.....#...
+        #..#..#...
+        #..##.#...
+        """
+        for i, js in enumerate([[0, 3, 4, 6], [0, 3, 6], [0, 6]]):
+            for j in js:
+                self.board.table[self.row_num - i - 1][j] = 1
+        self.assertEqual(self.board.adj_diff_sum(), 13, str(self.board))  # 3+2+1+1+3+3
+
 
 if __name__ == "__main__":
     unittest.main()

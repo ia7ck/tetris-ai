@@ -13,19 +13,22 @@ class CostFuncAi(Ai):
         for piece in piece_set:
             for x in range(board.col_num - piece.width + 1):
                 action = Action(x, piece)
-                tmp_board = copy.deepcopy(board)
-                can_put = tmp_board.proceed(action)
-                tmp_cost = self.calc(tmp_board) if can_put else sys.maxsize - 1
+                before_board, after_board = copy.deepcopy(board), copy.deepcopy(board)
+                can_put = after_board.proceed(action)
+                if can_put:
+                    tmp_cost = self.calc(before_board, after_board)
+                else:
+                    tmp_cost = sys.maxsize - 1
                 if tmp_cost < min_cost:
                     min_cost = tmp_cost
                     best_action = action
         assert min_cost < sys.maxsize
         return best_action
 
-    def calc(self, board: Board) -> int:
+    def calc(self, before_board: Board, after_board: Board) -> int:
         cost = 0
-        rm_line_num = board.resolve()
+        rm_line_num = after_board.resolve()
         cost -= rm_line_num * rm_line_num
-        cost += board.count_dead()
-        cost += board.max_height()
+        cost += after_board.count_dead() - before_board.count_dead()
+        cost += after_board.adj_diff_sum() - before_board.adj_diff_sum()
         return cost
