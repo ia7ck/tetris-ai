@@ -28,6 +28,7 @@ class Tetris:
         given_piece_set = random.choice(self.pieces)
         action = self.ai.get_action(self.board, given_piece_set)
         can_put = self.board.proceed(action)
+        self.gui.field.draw(self.board)
         if not can_put:
             print("can't put the piece with x = {}:".format(action.x0))
             print(action.piece)
