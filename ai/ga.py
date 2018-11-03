@@ -35,21 +35,27 @@ class Ga:
             score += SCORES[rm_line_num]
         return score
 
-    @staticmethod
-    def crossover(par1: Individual, par2: Individual) -> Individual:
-        return par2
+    @classmethod
+    def crossover(cls, par1: Individual, par2: Individual) -> Individual:
+        coeffs: List[int] = []
+        for i in range(3):
+            mn, mx = (
+                min(par1.genom[i], par2.genom[i]),
+                max(par1.genom[i], par2.genom[i]),
+            )
+            d = (mx - mn) // 10
+            coeffs.append(random.randint(mn - d, mx + d))
+        return Individual(coeffs, cls.calc_fitness(coeffs))
 
     @classmethod
     def solve(cls, population_size: int = 12, gen_limit: int = 10) -> List[int]:
         population: List[Individual] = []
         # init
         for i in range(population_size):
-            print("{} th trial".format(i))
             coeffs = [random.randint(-10000, 10000) for _ in range(3)]
             population.append(Individual(coeffs, cls.calc_fitness(coeffs)))
         # selection, genetic operation
         for i in range(gen_limit):
-            print("{} th trial".format(i))
             population.sort(key=operator.attrgetter("fitness"), reverse=True)
             elites = cls.selection(population)
             for j in range(len(elites), population_size):  # eliteと適当に選んだ個体を交叉させる
