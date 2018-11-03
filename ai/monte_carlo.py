@@ -1,9 +1,7 @@
-import time
+import time, random
 from typing import List, Dict, Tuple
-import random
-from ai import Ai
-from game import Piece, Action, make_pieces
-from tboard import Board
+from ai.abs_ai import Ai
+from game import Piece, Action, make_pieces, Board
 
 
 class MonteCarlo(Ai):

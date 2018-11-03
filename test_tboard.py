@@ -1,8 +1,5 @@
-import unittest
-import copy
-import pprint
-from tboard import Board
-from game import Piece, make_pieces, Action
+import unittest, copy
+from game import Piece, make_pieces, Action, Board
 
 
 class TestBoard(unittest.TestCase):
