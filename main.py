@@ -43,7 +43,9 @@ class Tetris:
 
 def main():
     tetris = Tetris()
-    tetris.ai = ai.cost_func_ai.CostFuncAi(coefficients=ai.ga.Ga.solve())
+    tetris.ai = ai.cost_func_ai.CostFuncAi(
+        coefficients=ai.ga.Ga.solve(population_size=8, gen_limit=4)  # 大きくしすぎると終わらない
+    )
 
     # rand_ai = ai.monte_carlo.MonteCarlo()
     # n = 5000

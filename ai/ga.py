@@ -1,4 +1,4 @@
-import random, operator, copy
+import random, operator
 from typing import List
 from ai.cost_func_ai import CostFuncAi
 from game import Board, pieces, SCORES
@@ -58,9 +58,9 @@ class Ga:
         for i in range(gen_limit):
             population.sort(key=operator.attrgetter("fitness"), reverse=True)
             elites = cls.selection(population)
-            for j in range(len(elites), population_size):  # eliteと適当に選んだ個体を交叉させる
+            for j in range(len(elites), population_size):  # eliteとその他の個体を交叉させる
                 population[j] = cls.crossover(
-                    random.choice(elites), random.choice(population)
+                    random.choice(elites), random.choice(population[len(elites) :])
                 )
         # termination
         best_score = -1
