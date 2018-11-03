@@ -1,5 +1,4 @@
 import sys, random
-import tkinter as tk
 from typing import List
 import game
 import graphic
