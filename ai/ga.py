@@ -5,12 +5,14 @@ from game import Board, pieces, SCORES
 
 
 @dataclasses.dataclass
-class Gene:
+class Individual:
     coefficients: List[int]
     score: int
 
 
-def selection(population: List[Gene]) -> List[Gene]:  # 強いのを25%だけ残す TODO:ルーレット方式も試す
+def selection(
+    population: List[Individual]
+) -> List[Individual]:  # 強いのを25%だけ残す TODO:ルーレット方式も試す
     return population[: (len(population) // 4)]
 
 
@@ -28,19 +30,19 @@ def calc_fitness(ai: CostFuncAi, board: Board) -> int:
     return score
 
 
-def crossover(par1: Gene, par2: Gene) -> Gene:
+def crossover(par1: Individual, par2: Individual) -> Individual:
     return par2
 
 
 def genetic_algorithm(population_size: int = 12, gen_limit: int = 10) -> List[int]:
     ai = CostFuncAi()
     board = Board()
-    population: List[Gene] = []
+    population: List[Individual] = []
     # init
     for _ in range(population_size):
         coeffs = [random.randint(-10000, 10000) for _ in range(3)]
         ai.coefficients = coeffs
-        population.append(Gene(coeffs, calc_fitness(ai, board)))
+        population.append(Individual(coeffs, calc_fitness(ai, board)))
     # selection, genetic operation
     for i in range(gen_limit):
         print("{} th trial".format(i))
