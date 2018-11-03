@@ -10,7 +10,7 @@ CANVAS_HEIGHT = 960
 ROW_NUM = 20
 COL_NUM = 10
 
-SCORES = [0, 100, 300, 500, 800]
+SCORES = [0, 100, 300, 500, 800]  # https://tetris.wiki/Scoring
 
 
 @dataclasses.dataclass
