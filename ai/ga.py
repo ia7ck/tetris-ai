@@ -10,6 +10,10 @@ class Gene:
     score: int
 
 
+def selection(population: List[Gene]) -> List[Gene]:  # 強いのを25%だけ残す TODO:ルーレット方式も試す
+    return population[: (len(population) // 4)]
+
+
 def calc_fitness(ai: CostFuncAi, board: Board) -> int:
     board.clear()
     score = 0
@@ -24,19 +28,26 @@ def calc_fitness(ai: CostFuncAi, board: Board) -> int:
     return score
 
 
+def crossover(par1: Gene, par2: Gene) -> Gene:
+    return par2
+
+
 def genetic_algorithm(population_size: int = 12, gen_limit: int = 10) -> List[int]:
     ai = CostFuncAi()
     board = Board()
     population: List[Gene] = []
     # init
     for _ in range(population_size):
-        coeffs = [random.randint(-100, 100) for _ in range(3)]
+        coeffs = [random.randint(-10000, 10000) for _ in range(3)]
         ai.coefficients = coeffs
         population.append(Gene(coeffs, calc_fitness(ai, board)))
     # selection, genetic operation
-    for _ in range(gen_limit):
+    for i in range(gen_limit):
+        print("{} th trial".format(i))
         population.sort(key=operator.attrgetter("score"), reverse=True)
-
+        elites = selection(population)
+        for j in range(len(elites), population_size):  # eliteと適当に選んだ個体を交叉させる
+            population[j] = crossover(random.choice(elites), random.choice(population))
     # termination
     best_score = -1
     best_coeffs: List[int] = []
