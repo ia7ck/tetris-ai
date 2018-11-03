@@ -36,9 +36,10 @@ def main():
     import sys
     import ai.monte_carlo
     import ai.cost_func_ai
+    import ai.ga
 
     tetris = Tetris()
-    tetris.ai = ai.cost_func_ai.CostFuncAi()
+    tetris.ai = ai.cost_func_ai.CostFuncAi(coefficients=ai.ga.genetic_algorithm())
 
     # rand_ai = ai.monte_carlo.MonteCarlo()
     # n = 5000
