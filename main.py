@@ -11,7 +11,6 @@ import ai.ga
 class Tetris:
     def __init__(self):
         self.board = game.Board()
-        self.pieces = game.make_pieces()
         # self.ai: ai.Ai # 気持ち
         self.gui: graphic.Graphic
         self.score = 0
@@ -21,7 +20,7 @@ class Tetris:
         self.run()
 
     def run(self):
-        given_piece_set = random.choice(self.pieces)
+        given_piece_set = random.choice(game.pieces)
         action = self.ai.get_action(self.board, given_piece_set)
         can_put = self.board.proceed(action)
         self.gui.field.draw(self.board)

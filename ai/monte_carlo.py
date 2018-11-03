@@ -1,7 +1,7 @@
 import time, random
 from typing import List, Dict, Tuple
 from ai.abs_ai import Ai
-from game import Piece, Action, make_pieces, Board
+from game import Piece, Action, Board, pieces
 
 
 class MonteCarlo(Ai):
@@ -37,7 +37,6 @@ class MonteCarlo(Ai):
         return Action(x, piece)
 
     def learn(self, num: int):
-        pieces = make_pieces()
         start_time = time.time()
         for _ in range(num):
             keys: List[Tuple[str, int]] = []

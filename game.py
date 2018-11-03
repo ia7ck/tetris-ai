@@ -23,7 +23,7 @@ COLORS = [
 ]
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class Piece:
     form: str
     form_id: int
@@ -35,56 +35,36 @@ class Piece:
         return "\n".join("".join(["#" if x else "." for x in r]) for r in self.blocks)
 
 
-def make_pieces() -> List[List[Piece]]:
-    pieces: List[List[Piece]] = []
-
-    pieces.append(
-        [Piece("I", 1, [[1, 1, 1, 1]], 4, 1), Piece("I", 1, [[1], [1], [1], [1]], 1, 4)]
-    )
-
-    pieces.append([Piece("O", 2, [[1, 1], [1, 1]], 2, 2)])
-
-    pieces.append(
-        [
-            Piece("S", 3, [[0, 1, 1], [1, 1, 0]], 3, 2),
-            Piece("S", 3, [[1, 0], [1, 1], [0, 1]], 2, 3),
-        ]
-    )
-
-    pieces.append(
-        [
-            Piece("Z", 4, [[1, 1, 0], [0, 1, 1]], 3, 2),
-            Piece("Z", 4, [[0, 1], [1, 1], [1, 0]], 2, 3),
-        ]
-    )
-
-    pieces.append(
-        [
-            Piece("J", 5, [[1, 0, 0], [1, 1, 1]], 3, 2),
-            Piece("J", 5, [[1, 1], [1, 0], [1, 0]], 2, 3),
-            Piece("J", 5, [[1, 1, 1], [0, 0, 1]], 3, 2),
-            Piece("J", 5, [[0, 1], [0, 1], [1, 1]], 2, 3),
-        ]
-    )
-    pieces.append(
-        [
-            Piece("L", 6, [[0, 0, 1], [1, 1, 1]], 3, 2),
-            Piece("L", 6, [[1, 0], [1, 0], [1, 1]], 2, 3),
-            Piece("L", 6, [[1, 1, 1], [1, 0, 0]], 3, 2),
-            Piece("L", 6, [[1, 1], [0, 1], [0, 1]], 2, 3),
-        ]
-    )
-
-    pieces.append(
-        [
-            Piece("T", 7, [[0, 1, 0], [1, 1, 1]], 3, 2),
-            Piece("T", 7, [[1, 0], [1, 1], [1, 0]], 2, 3),
-            Piece("T", 7, [[1, 1, 1], [0, 1, 0]], 3, 2),
-            Piece("T", 7, [[0, 1], [1, 1], [0, 1]], 2, 3),
-        ]
-    )
-
-    return pieces
+pieces: List[List[Piece]] = [
+    [Piece("I", 1, [[1, 1, 1, 1]], 4, 1), Piece("I", 1, [[1], [1], [1], [1]], 1, 4)],
+    [Piece("O", 2, [[1, 1], [1, 1]], 2, 2)],
+    [
+        Piece("S", 3, [[0, 1, 1], [1, 1, 0]], 3, 2),
+        Piece("S", 3, [[1, 0], [1, 1], [0, 1]], 2, 3),
+    ],
+    [
+        Piece("Z", 4, [[1, 1, 0], [0, 1, 1]], 3, 2),
+        Piece("Z", 4, [[0, 1], [1, 1], [1, 0]], 2, 3),
+    ],
+    [
+        Piece("J", 5, [[1, 0, 0], [1, 1, 1]], 3, 2),
+        Piece("J", 5, [[1, 1], [1, 0], [1, 0]], 2, 3),
+        Piece("J", 5, [[1, 1, 1], [0, 0, 1]], 3, 2),
+        Piece("J", 5, [[0, 1], [0, 1], [1, 1]], 2, 3),
+    ],
+    [
+        Piece("L", 6, [[0, 0, 1], [1, 1, 1]], 3, 2),
+        Piece("L", 6, [[1, 0], [1, 0], [1, 1]], 2, 3),
+        Piece("L", 6, [[1, 1, 1], [1, 0, 0]], 3, 2),
+        Piece("L", 6, [[1, 1], [0, 1], [0, 1]], 2, 3),
+    ],
+    [
+        Piece("T", 7, [[0, 1, 0], [1, 1, 1]], 3, 2),
+        Piece("T", 7, [[1, 0], [1, 1], [1, 0]], 2, 3),
+        Piece("T", 7, [[1, 1, 1], [0, 1, 0]], 3, 2),
+        Piece("T", 7, [[0, 1], [1, 1], [0, 1]], 2, 3),
+    ],
+]
 
 
 @dataclasses.dataclass
@@ -117,6 +97,9 @@ class Board:
         #.#
         """
         return "\n".join("".join(["#" if x else "." for x in r]) for r in self.table)
+
+    def clear(self):
+        self.table = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
 
     def proceed(self, action: Action) -> bool:
         assert 0 <= action.x0 and action.x0 < self.col_num

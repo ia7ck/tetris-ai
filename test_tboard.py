@@ -1,11 +1,11 @@
 import unittest, copy
-from game import Piece, make_pieces, Action, Board
+from game import Piece, Action, Board, pieces
 
 
 class TestBoard(unittest.TestCase):
     def setUp(self):
         self.board = Board()
-        self.pieces = make_pieces()
+        self.pieces = pieces  # あ
         self.piece_dict = {}
         for form in ["I", "O", "S", "Z", "J", "L", "T"]:
             self.piece_dict[form] = [
