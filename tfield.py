@@ -1,7 +1,7 @@
 import tkinter as tk
 from tboard import Board
 from typing import List
-from game import CANVAS_WIDTH, CANVAS_HEIGHT
+from game import CANVAS_WIDTH, CANVAS_HEIGHT, COLORS
 
 ObjectID = int  # たぶん
 
@@ -31,5 +31,6 @@ class Field(tk.Canvas):
     def draw(self, board: Board):
         for r in range(board.row_num):
             for c in range(board.col_num):
-                fill_color = "gray" if board.table[r][c] else "white"
+                # fill_color = "gray" if board.table[r][c] else "white"
+                fill_color = COLORS[board.table[r][c]]
                 self.itemconfigure(self.rects[r][c], fill=fill_color)

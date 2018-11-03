@@ -50,13 +50,13 @@ class Board:
         for i, row in enumerate(action.piece.blocks):
             for j in range(len(row)):
                 if row[j]:
-                    self.table[i + min_distance][action.x0 + j] = 1
+                    self.table[i + min_distance][action.x0 + j] = action.piece.form_id
         return True
 
     def resolve(self) -> int:
         removed_num = 0
         for i, row in enumerate(self.table):
-            if sum(row) == self.col_num:
+            if row.count(0) == 0:
                 removed_num += 1
                 for ii in reversed(range(i)):
                     for j in range(len(row)):
