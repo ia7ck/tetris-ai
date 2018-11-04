@@ -3,6 +3,8 @@ from typing import List
 from ai.cost_func_ai import CostFuncAi
 from game import Board, pieces, SCORES
 
+COEFFS_LENGTH = 3
+
 
 class Individual:
     def __init__(self, coefficients, score):
@@ -38,7 +40,7 @@ class Ga:
     @classmethod
     def crossover(cls, par1: Individual, par2: Individual) -> Individual:
         coeffs: List[int] = []
-        for i in range(3):
+        for i in range(COEFFS_LENGTH):
             mn, mx = (
                 min(par1.genom[i], par2.genom[i]),
                 max(par1.genom[i], par2.genom[i]),
@@ -52,7 +54,7 @@ class Ga:
         population: List[Individual] = []
         # init
         for i in range(population_size):
-            coeffs = [random.randint(-10000, 10000) for _ in range(3)]
+            coeffs = [random.randint(-10000, 10000) for _ in range(COEFFS_LENGTH)]
             population.append(Individual(coeffs, cls.calc_fitness(coeffs)))
         # selection, genetic operation
         for i in range(gen_limit):

@@ -42,17 +42,8 @@ class Tetris:
 
 def main():
     tetris = Tetris()
-    tetris.ai = ai.cost_func_ai.CostFuncAi(
-        coefficients=ai.ga.Ga.solve(population_size=8, gen_limit=4)  # 大きくしすぎると終わらない
-    )
-
-    # rand_ai = ai.monte_carlo.MonteCarlo()
-    # n = 5000
-    # if len(sys.argv) == 2:
-    #     n = int(sys.argv[1])
-    # rand_ai.learn(n)
-    # tetris.ai = rand_ai
-
+    tetris.ai = ai.cost_func_ai.CostFuncAi()
+    tetris.ai.coefficients = ai.ga.Ga.solve(population_size=2, gen_limit=0)
     tetris.gui = graphic.Graphic(tetris.board)
     tetris.play()
     tetris.gui.mainloop()

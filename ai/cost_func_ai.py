@@ -5,11 +5,8 @@ from game import Piece, Action, Board
 
 
 class CostFuncAi(Ai):
-    def __init__(self, coefficients: List[int] = None):
-        if coefficients is None:
-            self.coefficients = [-1, 1, 1]
-        else:
-            self.coefficients = coefficients
+    def __init__(self):
+        self.coefficients: List[int]
 
     def get_action(self, board: Board, piece_set: List[Piece]) -> Action:
         best_action: Action
