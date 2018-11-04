@@ -23,19 +23,23 @@ class Ga:
         return population[: (len(population) // 4)]
 
     @classmethod
-    def calc_fitness(cls, coeffs: List[int]) -> int:
+    def calc_fitness(cls, coeffs: List[int]) -> int:  # Mターン終了時のスコアをN回計算した平均
         cls.ai.coefficients = coeffs
-        cls.board.clear()
-        score = 0
-        while True:
-            given_piece_set = random.choice(pieces)
-            action = cls.ai.get_action(cls.board, given_piece_set)
-            can_put = cls.board.proceed(action)
-            if not can_put:
-                break
-            rm_line_num = cls.board.resolve()
-            score += SCORES[rm_line_num]
-        return score
+        N, M = 5, 50
+        score_sum = 0
+        for _i in range(N):
+            cls.board.clear()
+            score = 0
+            for _t in range(M):
+                given_piece_set = random.choice(pieces)
+                action = cls.ai.get_action(cls.board, given_piece_set)
+                can_put = cls.board.proceed(action)
+                if not can_put:
+                    break
+                rm_line_num = cls.board.resolve()
+                score += SCORES[rm_line_num]
+            score_sum += score
+        return score // N
 
     @classmethod
     def crossover(cls, par1: Individual, par2: Individual) -> Individual:
