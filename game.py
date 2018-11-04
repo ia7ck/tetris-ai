@@ -20,6 +20,7 @@ COLORS = [
     "#A3BCE2",  # J
     "#FCD7A1",  # L
     "#CFA7CD",  # T
+    "#E0E0E0",  # gray
 ]
 
 
@@ -124,8 +125,16 @@ class Board:
         for i, row in enumerate(action.piece.blocks):
             for j in range(len(row)):
                 if row[j]:
-                    self.table[i + min_distance][action.x0 + j] = action.piece.form_id
+                    # 仮のピースを置く（色を灰色にするため）
+                    self.table[i + min_distance][action.x0 + j] = len(pieces) + 1
         return True
+
+    def activate(self, form_id: int):
+        assert 0 <= form_id and form_id <= len(pieces)
+        for i in range(self.row_num):
+            for j in range(self.col_num):
+                if self.table[i][j] == len(pieces) + 1:
+                    self.table[i][j] = form_id
 
     def resolve(self) -> int:
         removed_num = 0

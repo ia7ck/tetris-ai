@@ -23,15 +23,14 @@ class Tetris:
         action = self.ai.get_action(self.board, given_piece_set)
         can_put = self.board.proceed(action)
         self.gui.field.draw(self.board)
+        self.board.activate(action.piece.form_id)
+        self.gui.after(400, self.gui.field.draw, self.board)  # 巧みな調整
         if not can_put:
             self.tear_down(action)
             return
-        wait_time = 100
         rm_line_num = self.board.resolve()
         self.score += game.SCORES[rm_line_num]
-        if rm_line_num > 0:
-            wait_time += 200
-        self.gui.after(wait_time, self.run)
+        self.gui.after(300 if rm_line_num else 100, self.run)  # 巧みな調整その2
 
     def tear_down(self, action: game.Action):
         print("[end]")
@@ -41,7 +40,8 @@ class Tetris:
 def main():
     tetris = Tetris()
     tetris.ai = ai.cost_func_ai.CostFuncAi()
-    tetris.ai.coefficients = ai.ga.Ga.solve(population_size=2, gen_limit=0)
+    # tetris.ai.coefficients = ai.ga.Ga.solve(population_size=2, gen_limit=0)
+    tetris.ai.coefficients = [-1, 1, 1]
     tetris.gui = graphic.Graphic(tetris.board)
     tetris.play()
     tetris.gui.mainloop()
