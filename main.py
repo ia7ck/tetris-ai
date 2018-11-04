@@ -35,8 +35,6 @@ class Tetris:
 
     def tear_down(self, action: game.Action):
         print("[end]")
-        print("can't put the piece with x = {}:".format(action.x0))
-        print(action.piece)
         print("score : {}".format(self.score))
 
 
