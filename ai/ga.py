@@ -56,6 +56,7 @@ class Ga:
         for i in range(population_size):
             coeffs = [random.randint(-10000, 10000) for _ in range(COEFFS_LENGTH)]
             population.append(Individual(coeffs, cls.calc_fitness(coeffs)))
+        print("init finished")
         # selection, genetic operation
         for i in range(gen_limit):
             population.sort(key=operator.attrgetter("fitness"), reverse=True)
@@ -64,6 +65,13 @@ class Ga:
                 population[j] = cls.crossover(
                     random.choice(elites), random.choice(population[len(elites) :])
                 )
+            print(
+                "{}/{} selection-genetic finished.".format(i + 1, gen_limit)
+                + " "
+                + "current best score : {}".format(
+                    max(population, key=operator.attrgetter("fitness")).fitness
+                )
+            )
         # termination
         best_score = -1
         best_coeffs: List[int] = []
