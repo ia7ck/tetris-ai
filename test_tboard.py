@@ -104,6 +104,19 @@ class TestBoard(unittest.TestCase):
                     self.board.table[self.row_num - i - 1][j] = 1
         self.assertEqual(self.board.max_height(), 3, str(self.board))
 
+    def test_min_height(self):
+        """ 
+        #.........
+        ##..#....#
+        ##########
+        """
+        for j in range(self.col_num):
+            self.board.table[self.row_num - 1][j] = 1
+        for i, js in enumerate([[], [0, 1, 4, 9], [0]]):
+            for j in js:
+                self.board.table[self.row_num - i - 1][j] = 1
+        self.assertEqual(self.board.min_height(), 1, str(self.board))
+
     def test_adj_diff_sum(self):
         """ 
         #.....#...

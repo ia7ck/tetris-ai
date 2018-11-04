@@ -171,6 +171,12 @@ class Board:
                 return self.row_num - i
         return 0
 
+    def min_height(self) -> int:
+        for i in reversed(range(self.row_num)):
+            if self.table[i].count(0):
+                return self.row_num - i - 1
+        return self.row_num
+
     def adj_diff_sum(self) -> int:
         """ retrun sum(abs(dep[i+1]-dep[i])) for i in [0, col_num) """
         ret = 0
