@@ -99,7 +99,9 @@ class Board:
         return "\n".join("".join(["#" if x else "." for x in r]) for r in self.table)
 
     def clear(self):
-        self.table = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
+        for i in range(self.row_num):
+            for j in range(self.col_num):
+                self.table[i][j] = 0
 
     def proceed(self, action: Action) -> bool:
         assert 0 <= action.x0 and action.x0 < self.col_num
