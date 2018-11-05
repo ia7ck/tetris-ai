@@ -39,7 +39,7 @@ class Ga:
                 rm_line_num = cls.board.resolve()
                 score += SCORES[rm_line_num]
             score_sum += score
-        return score // N
+        return score_sum // N
 
     @classmethod
     def crossover(cls, par1: Individual, par2: Individual) -> Individual:
@@ -65,10 +65,14 @@ class Ga:
         for i in range(gen_limit):
             population.sort(key=operator.attrgetter("fitness"), reverse=True)
             elites = cls.selection(population)
+            next_population = elites
             for j in range(len(elites), population_size):  # eliteとその他の個体を交叉させる
-                population[j] = cls.crossover(
-                    random.choice(elites), random.choice(population[len(elites) :])
+                next_population.append(
+                    cls.crossover(
+                        random.choice(elites), random.choice(population[len(elites) :])
+                    )
                 )
+            population = next_population
             print(
                 "{}/{} selection-genetic finished.".format(i + 1, gen_limit)
                 + " "
