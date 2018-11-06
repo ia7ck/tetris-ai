@@ -152,27 +152,29 @@ class Board:
         return self.count_dead() > 0
 
     def count_dead(self) -> int:
-        dist = [[sys.maxsize for c in range(self.col_num)] for r in range(self.row_num)]
         # queue.Queue() は遅い http://n-knuu.hatenablog.jp/entry/2015/05/30/183718
         que: collections.deque = collections.deque()
         for j in range(self.col_num):
             if self.table[0][j] == 0:
-                dist[0][j] = 0
+                self.table[0][j] = -1
                 que.append((0, j))
         while len(que) > 0:
             i, j = que.popleft()
             for di, dj in self.didj:
                 ni, nj = i + di, j + dj
                 if 0 <= ni and ni < self.row_num and 0 <= nj and nj < self.col_num:
-                    if (dist[ni][nj] == sys.maxsize) and (self.table[ni][nj] == 0):
-                        dist[ni][nj] = dist[i][j] + 1
+                    if self.table[ni][nj] == 0:
+                        self.table[ni][nj] = self.table[i][j] - 1
                         que.append((ni, nj))
         dead_num = 0
         for i in range(self.row_num):
             for j in range(self.col_num):
                 if self.table[i][j] == 0:
-                    if dist[i][j] > i:  # 細長いとこもダメ
+                    dead_num += 1
+                elif self.table[i][j] < 0:
+                    if -self.table[i][j] > i + 1:
                         dead_num += 1
+                    self.table[i][j] = 0
 
         return dead_num
 
