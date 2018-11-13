@@ -10,7 +10,7 @@ CANVAS_HEIGHT = 960
 ROW_NUM = 20
 COL_NUM = 10
 
-SCORES = [0, 100, 300, 500, 800]  # https://tetris.wiki/Scoring
+SCORES = [0, 200, 400, 800, 1600]  # https://tetris.wiki/Scoring
 COLORS = [
     "white",
     "#9FD9F6",  # I

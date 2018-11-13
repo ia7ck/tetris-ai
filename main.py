@@ -1,8 +1,7 @@
-import sys, random
+import sys, random, argparse
 from typing import List
 import game
 import graphic
-import ai.monte_carlo
 import ai.cost_func_ai
 import ai.ga
 
@@ -10,12 +9,12 @@ import ai.ga
 class Tetris:
     def __init__(self):
         self.board = game.Board()
-        # self.ai: ai.Ai # 気持ち
+        self.ai: ai.cost_func_ai.CostFuncAi
         self.gui: graphic.Graphic
         self.score = 0
 
     def play(self):
-        print("[start]")
+        print("coefficients : {}".format(self.ai.coefficients))
         self.run()
 
     def run(self):
@@ -33,15 +32,19 @@ class Tetris:
         self.gui.after(300 if rm_line_num else 100, self.run)  # 巧みな調整その2
 
     def tear_down(self, action: game.Action):
-        print("[end]")
         print("score : {}".format(self.score))
 
 
 def main():
     tetris = Tetris()
     tetris.ai = ai.cost_func_ai.CostFuncAi()
-    # tetris.ai.coefficients = ai.ga.Ga.solve(population_size=2, gen_limit=0)
-    tetris.ai.coefficients = [-1, 1, 1]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--population_size", default=6, type=int)
+    parser.add_argument("--gen_limit", default=4, type=int)
+    args = parser.parse_args()
+    tetris.ai.coefficients = ai.ga.Ga.solve(
+        population_size=args.population_size, gen_limit=args.gen_limit
+    )
     tetris.gui = graphic.Graphic(tetris.board)
     tetris.play()
     tetris.gui.mainloop()

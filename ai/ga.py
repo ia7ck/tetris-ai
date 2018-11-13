@@ -38,7 +38,8 @@ class Ga:
                     break
                 rm_line_num = cls.board.resolve()
                 score += SCORES[rm_line_num]
-            score_sum += score
+            else:
+                score_sum += score
         return score_sum // N
 
     @classmethod
@@ -60,10 +61,9 @@ class Ga:
         for i in range(population_size):
             coeffs = [random.randint(-10000, 10000) for _ in range(COEFFS_LENGTH)]
             population.append(Individual(coeffs, cls.calc_fitness(coeffs)))
-        print("init finished")
         # selection, genetic operation
+        population.sort(key=operator.attrgetter("fitness"), reverse=True)
         for i in range(gen_limit):
-            population.sort(key=operator.attrgetter("fitness"), reverse=True)
             elites = cls.selection(population)
             next_population = elites
             for j in range(len(elites), population_size):  # eliteとその他の個体を交叉させる
@@ -73,20 +73,7 @@ class Ga:
                     )
                 )
             population = next_population
-            print(
-                "{}/{} selection-genetic finished.".format(i + 1, gen_limit)
-                + " "
-                + "current best score : {}".format(
-                    max(population, key=operator.attrgetter("fitness")).fitness
-                )
-            )
+            population.sort(key=operator.attrgetter("fitness"), reverse=True)
         # termination
-        best_score = -1
-        best_coeffs: List[int] = []
-        for individual in population:
-            if individual.fitness > best_score:
-                best_score = individual.fitness
-                best_coeffs = individual.genom
-        print("best score : {}".format(best_score))
-        print("best coeffs : {}".format(best_coeffs))
-        return best_coeffs
+        best_individual = max(population, key=operator.attrgetter("fitness"))
+        return best_individual.genom
