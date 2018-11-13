@@ -1,15 +1,14 @@
 import copy, sys
-from typing import List
 from ai.abs_ai import Ai
 from game import Piece, Action, Board
 
 
 class CostFuncAi(Ai):
     def __init__(self):
-        self.coefficients: List[int]
+        self.coefficients = []
 
-    def get_action(self, board: Board, piece_set: List[Piece]) -> Action:
-        best_action: Action
+    def get_action(self, board, piece_set):
+        best_action = Action(None, None)
         min_cost = sys.maxsize
         for piece in piece_set:
             for x in range(board.col_num - piece.width + 1):
@@ -26,7 +25,7 @@ class CostFuncAi(Ai):
         assert min_cost < sys.maxsize
         return best_action
 
-    def calc(self, before_board: Board, after_board: Board) -> int:
+    def calc(self, before_board, after_board):
         cost = 0
         rm_line_num = after_board.resolve()
         for c, x in zip(

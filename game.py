@@ -1,6 +1,3 @@
-import dataclasses
-from typing import List
-
 WINDOW_WIDTH = 480
 WINDOW_HEIGHT = 960
 
@@ -24,19 +21,19 @@ COLORS = [
 ]
 
 
-@dataclasses.dataclass(frozen=True)
 class Piece:
-    form: str
-    form_id: int
-    blocks: List[List[int]]
-    width: int
-    height: int
+    def __init__(self, form, form_id, blocks, width, height):
+        self.form = form
+        self.form_id = form_id
+        self.blocks = blocks
+        self.width = width
+        self.height = height
 
-    def __str__(self) -> str:
+    def __str__(self):
         return "\n".join("".join(["#" if x else "." for x in r]) for r in self.blocks)
 
 
-pieces: List[List[Piece]] = [
+pieces = [
     [Piece("I", 1, [[1, 1, 1, 1]], 4, 1), Piece("I", 1, [[1], [1], [1], [1]], 1, 4)],
     [Piece("O", 2, [[1, 1], [1, 1]], 2, 2)],
     [
@@ -68,10 +65,10 @@ pieces: List[List[Piece]] = [
 ]
 
 
-@dataclasses.dataclass
 class Action:
-    x0: int
-    piece: Piece
+    def __init__(self, x0, piece):
+        self.x0 = x0
+        self.piece = piece
 
 
 import sys, collections
@@ -85,7 +82,7 @@ class Board:
     def __init__(self):
         self.table = [[0 for c in range(self.col_num)] for r in range(self.row_num)]
 
-    def __str__(self) -> str:
+    def __str__(self):
         """ 
         [
             [0, 1, 1], 
@@ -104,7 +101,7 @@ class Board:
             for j in range(self.col_num):
                 self.table[i][j] = 0
 
-    def proceed(self, action: Action) -> bool:
+    def proceed(self, action):
         assert 0 <= action.x0 and action.x0 < self.col_num
         min_distance = self.row_num - 1  # ピースの各ブロックが落下できる最小距離
         for i, row in enumerate(action.piece.blocks):
@@ -125,18 +122,10 @@ class Board:
         for i, row in enumerate(action.piece.blocks):
             for j in range(len(row)):
                 if row[j]:
-                    # 仮のピースを置く（色を灰色にするため）
-                    self.table[i + min_distance][action.x0 + j] = len(pieces) + 1
+                    self.table[i + min_distance][action.x0 + j] = action.piece.form_id
         return True
 
-    def activate(self, form_id: int):
-        assert 0 <= form_id and form_id <= len(pieces)
-        for i in range(self.row_num):
-            for j in range(self.col_num):
-                if self.table[i][j] == len(pieces) + 1:
-                    self.table[i][j] = form_id
-
-    def resolve(self) -> int:
+    def resolve(self):
         removed_num = 0
         for i, row in enumerate(self.table):
             if row.count(0) == 0:
@@ -148,12 +137,12 @@ class Board:
                     self.table[0][j] = 0  # 最上段には空行
         return removed_num
 
-    def has_dead(self) -> bool:
+    def has_dead(self):
         return self.count_dead() > 0
 
-    def count_dead(self) -> int:
+    def count_dead(self):
         # queue.Queue() は遅い http://n-knuu.hatenablog.jp/entry/2015/05/30/183718
-        que: collections.deque = collections.deque()
+        que = collections.deque()
         for j in range(self.col_num):
             if self.table[0][j] == 0:
                 self.table[0][j] = -1
@@ -178,19 +167,19 @@ class Board:
 
         return dead_num
 
-    def max_height(self) -> int:
+    def max_height(self):
         for i, row in enumerate(self.table):
             if sum(row) > 0:
                 return self.row_num - i
         return 0
 
-    def min_height(self) -> int:
+    def min_height(self):
         for i in reversed(range(self.row_num)):
             if self.table[i].count(0):
                 return self.row_num - i - 1
         return self.row_num
 
-    def adj_diff_sum(self) -> int:
+    def adj_diff_sum(self):
         """ retrun sum(abs(dep[i+1]-dep[i])) for i in [0, col_num) """
         ret = 0
         pre_d = 0

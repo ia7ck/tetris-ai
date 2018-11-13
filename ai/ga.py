@@ -1,5 +1,4 @@
 import random, operator
-from typing import List
 from ai.cost_func_ai import CostFuncAi
 from game import Board, pieces, SCORES
 
@@ -17,13 +16,11 @@ class Ga:
     board = Board()
 
     @staticmethod
-    def selection(
-        population: List[Individual]
-    ) -> List[Individual]:  # 強いのを25%だけ残す TODO:ルーレット方式も試す
+    def selection(population):  # 強いのを25%だけ残す TODO:ルーレット方式も試す
         return population[: (len(population) // 4)]
 
     @classmethod
-    def calc_fitness(cls, coeffs: List[int]) -> int:  # Mターン終了時のスコアをN回計算した平均
+    def calc_fitness(cls, coeffs):  # Mターン終了時のスコアをN回計算した平均
         cls.ai.coefficients = coeffs
         N, M = 5, 50
         score_sum = 0
@@ -44,7 +41,7 @@ class Ga:
 
     @classmethod
     def crossover(cls, par1: Individual, par2: Individual) -> Individual:
-        coeffs: List[int] = []
+        coeffs = []
         for i in range(COEFFS_LENGTH):
             mn, mx = (
                 min(par1.genom[i], par2.genom[i]),
@@ -55,8 +52,8 @@ class Ga:
         return Individual(coeffs, cls.calc_fitness(coeffs))
 
     @classmethod
-    def solve(cls, population_size: int = 12, gen_limit: int = 10) -> List[int]:
-        population: List[Individual] = []
+    def solve(cls, population_size=12, gen_limit=10):
+        population = []
         # init
         for i in range(population_size):
             coeffs = [random.randint(-10000, 10000) for _ in range(COEFFS_LENGTH)]

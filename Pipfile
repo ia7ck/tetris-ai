@@ -8,7 +8,6 @@ name = "pypi"
 [dev-packages]
 pylint = "*"
 black = "*"
-mypy = "*"
 
 [requires]
 python_version = "3.7"
